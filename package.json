@@ -12,8 +12,7 @@
           "cors": "^2.8.5",
           "dotenv": "^16.0.3",
           "axios": "^1.4.0",
-          "anthropic": "^0.7.0"
-    },
+    "@anthropic-ai/sdk": "^0.27.0",    },
     "devDependencies": {
           "nodemon": "^2.0.20"
     }
