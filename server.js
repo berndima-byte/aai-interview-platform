@@ -5,7 +5,7 @@ const Anthropic = require('@anthropic-ai/sdk');
 const axios = require('axios');
 
 const app = express();
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 80;
 
 app.use(cors());
 app.use(express.json());
