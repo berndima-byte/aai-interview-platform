@@ -1,0 +1,12 @@
+[build]
+docker = "./Dockerfile"
+
+[deploy]
+starboardEnabled = true
+
+[env]
+PORT = "8080"
+
+[public]
+provider = "railway"
+host = "*.railway.app"
