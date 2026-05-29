@@ -93,5 +93,106 @@ app.get('/api/health', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
+
+    // Initialize SQLite database
+    const db = new sqlite3.Database(':memory:', (err) => {
+          if (err) {
+                  console.error('Database error:', err);
+          } else {
+                  console.log('Connected to in-memory SQLite database');
+          }
+    });
+
+    // Create interviews table
+    db.run(`
+      CREATE TABLE IF NOT EXISTS interviews (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+              type TEXT NOT NULL,
+                  customPrompt TEXT,
+                      messages TEXT NOT NULL,
+                          provider TEXT NOT NULL,
+                              createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+                                )
+                                `);
+
+    // Save interview endpoint
+    app.post('/api/save-interview', (req, res) => {
+          const { type, customPrompt, messages, provider } = req.body;
+          const messagesJSON = JSON.stringify(messages);
+
+          db.run(
+                  'INSERT INTO interviews (type, customPrompt, messages, provider) VALUES (?, ?, ?, ?)',
+                  [type, customPrompt, messagesJSON, provider],
+                  function(err) {
+                            if (err) {
+                                        res.status(500).json({ error: err.message });
+                            } else {
+                                        res.json({ id: this.lastID, message: 'Interview saved successfully' });
+                            }
+                  }
+                );
+    });
+
+    // Get all interviews endpoint
+    app.get('/api/interviews', (req, res) => {
+          db.all('SELECT * FROM interviews ORDER BY createdAt DESC', (err, rows) => {
+                  if (err) {
+                            res.status(500).json({ error: err.message });
+                  } else {
+                            const interviews = rows.map(row => ({
+                                        ...row,
+                                        messages: JSON.parse(row.messages)
+                            }));
+                            res.json(interviews);
+                  }
+          });
+    });
+
+    // Get single interview endpoint
+    app.get('/api/interviews/:id', (req, res) => {
+          const { id } = req.params;
+          db.get('SELECT * FROM interviews WHERE id = ?', [id], (err, row) => {
+                  if (err) {
+                            res.status(500).json({ error: err.message });
+                  } else if (!row) {
+                            res.status(404).json({ error: 'Interview not found' });
+                  } else {
+                            res.json({
+                                        ...row,
+                                        messages: JSON.parse(row.messages)
+                            });
+                  }
+          });
+    });
+
+    // Delete interview endpoint
+    app.delete('/api/interviews/:id', (req, res) => {
+          const { id } = req.params;
+          db.run('DELETE FROM interviews WHERE id = ?', [id], function(err) {
+                  if (err) {
+                            res.status(500).json({ error: err.message });
+                  } else {
+                            res.json({ message: 'Interview deleted successfully', changes: this.changes });
+                  }
+          });
+    });
+
+    // Export interviews as JSON endpoint
+    app.get('/api/interviews/export/json', (req, res) => {
+          db.all('SELECT * FROM interviews', (err, rows) => {
+                  if (err) {
+                            res.status(500).json({ error: err.message });
+                  } else {
+                            const interviews = rows.map(row => ({
+                                        ...row,
+                                        messages: JSON.parse(row.messages)
+                            }));
+                            res.setHeader('Content-Disposition', 'attachment; filename=interviews.json');
+                            res.setHeader('Content-Type', 'application/json');
+                            res.json(interviews);
+                  }
+          });
+    });
+    
     console.log(`Server running on http://localhost:${PORT}`);
 });
