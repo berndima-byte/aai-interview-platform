@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AI Interview Platform</title>
+      <link rel="stylesheet" href="style.css">
+  </head>
+<body>
+      <div class="container">
+                <div class="header">
+                              <h1>🤖 AI Interview Platform</h1>
+                            <p>Conduct AI-powered interviews with Claude or OpenAI</p>
+                </div>div>
+      
+              <div class="setup-section">
+                          <h2>Interview Setup</h2>
+                          <div class="form-group">
+                                          <label for="api-choice">Select AI Provider:</label>label>
+                                          <select id="api-choice">
+                                                              <option value="claude">Claude (Anthropic)</option>option>
+                                                              <option value="openai">OpenAI</option>option>
+                                          </select>select>
+                          </div>div>
+              
+                          <div class="form-group">
+                                          <label for="interview-type">Interview Type:</label>label>
+                                          <select id="interview-type">
+                                                              <option value="general">General Interview</option>option>
+                                                              <option value="technical">Technical Interview</option>option>
+                                                              <option value="hr">HR Interview</option>option>
+                                                              <option value="sales">Sales Interview</option>option>
+                                          </select>select>
+                          </div>div>
+              
+                          <div class="form-group">
+                                          <label for="custom-prompt">Custom Prompt (optional):</label>label>
+                                          <textarea id="custom-prompt" placeholder="Enter a custom interview prompt..."></textarea>
+                          </div>div>
+              
+                          <button id="start-btn" class="btn-primary">Start Interview</button>button>
+              </div>div>
+      
+              <div class="interview-section" id="interview-section" style="display: none;">
+                          <h2>Interview</h2>
+                          <div id="chat-container" class="chat-container">
+                                          <div id="chat-messages" class="chat-messages"></div>div>
+                          </div>div>
+                          
+                          <div class="input-group">
+                                          <input type="text" id="message-input" placeholder="Your response..." />
+                                          <button id="send-btn" class="btn-primary">Send</button>button>
+                          </div>div>
+              
+                          <button id="end-btn" class="btn-secondary">End Interview</button>button>
+              </div>div>
+      
+              <div id="loading" class="loading" style="display: none;">
+                          <p>AI is thinking...</p>
+              </div>div>
+      </div>div>
+
+    <script src="script.js"></script>
+</body>
+</html>html>
+</p></p></h1>
+</body></title>
+  </head>
