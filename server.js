@@ -3,6 +3,9 @@ const cors = require('cors');
 require('dotenv').config();
 const Anthropic = require('@anthropic-ai/sdk');
 const axios = require('axios');
+const sqlite3 = require('sqlite3').verbose();
+const OpenAI = require('openai');
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const app = express();
 const PORT = process.env.PORT || 80;
