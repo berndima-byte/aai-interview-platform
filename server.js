@@ -19,13 +19,8 @@ const anthropic = new Anthropic({
     apiKey: process.env.CLAUDE_API_KEY,
 });
 
-// System prompts for different interview types
-const systemPrompts = {
-    general: 'You are a friendly and professional interviewer. Conduct a conversational interview, asking one question at a time. Be welcoming and encouraging.',
-    technical: 'You are a technical interviewer. Ask challenging but fair technical questions. Be professional and thorough.',
-    hr: 'You are an HR professional. Conduct a structured interview focusing on soft skills, experience, and cultural fit.',
-    sales: 'You are a sales manager conducting an interview. Focus on sales experience, communication skills, and ability to handle rejection.',
-};
+// System prompt for introduction/acquaintance interview
+const systemPrompt = `You are a friendly and professional interviewer conducting a getting-to-know-you conversation. Your goal is to learn about the person in a warm, genuine way. Ask one clear question at a time about their background, interests, experience, or goals. Listen actively and ask follow-up questions based on their answers. Keep the conversation flowing naturally. Be encouraging and show genuine interest in their responses.`;
 
 // API endpoint for Claude
 app.post('/api/interview-claude', async (req, res) => {
