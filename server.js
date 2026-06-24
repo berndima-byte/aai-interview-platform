@@ -25,14 +25,14 @@ const systemPrompt = `You are a friendly and professional interviewer conducting
 // API endpoint for Claude
 app.post('/api/interview-claude', async (req, res) => {
     try {
-          const { messages, interviewType = 'general', customPrompt } = req.body;
+          const { messages, customPrompt } = req.body;
 
-      const systemPrompt = customPrompt || systemPrompts[interviewType] || systemPrompts.general;
+      const prompt = customPrompt || systemPrompt;
 
       const response = await anthropic.messages.create({
               model: 'claude-3-5-sonnet-20241022',
               max_tokens: 1024,
-              system: systemPrompt,
+              system: prompt,
               messages: messages.map(msg => ({
                         role: msg.role,
                         content: msg.content,
@@ -52,14 +52,14 @@ app.post('/api/interview-claude', async (req, res) => {
 // API endpoint for OpenAI
 app.post('/api/interview-openai', async (req, res) => {
     try {
-          const { messages, interviewType = 'general', customPrompt } = req.body;
+          const { messages, customPrompt } = req.body;
 
-      const systemPrompt = customPrompt || systemPrompts[interviewType] || systemPrompts.general;
+      const prompt = customPrompt || systemPrompt;
 
       const response = await axios.post('https://api.openai.com/v1/chat/completions', {
               model: 'gpt-3.5-turbo',
               messages: [
-                { role: 'system', content: systemPrompt },
+                { role: 'system', content: prompt },
                         ...messages.map(msg => ({
                                     role: msg.role,
                                     content: msg.content,
